@@ -16,14 +16,14 @@ def preprocess_blizzard(args):
 
 def preprocess_ljspeech(args):
   in_dir = os.path.join(args.base_dir, 'LJSpeech-1.1')
-  out_dir = os.path.join(args.base_dir, args.output)
+  out_dir = os.path.join(in_dir, args.output)
   os.makedirs(out_dir, exist_ok=True)
   metadata = ljspeech.build_from_path(in_dir, out_dir, args.num_workers, tqdm=tqdm)
   write_metadata(metadata, out_dir)
 
 def preprocess_benedict(args):
   in_dir = os.path.join(args.base_dir, 'Benedict')
-  out_dir = os.path.join(args.base_dir, args.output)
+  out_dir = os.path.join(in_dir, args.output)
   os.makedirs(out_dir, exist_ok=True)
 
   # build_form_path는
@@ -45,7 +45,7 @@ def write_metadata(metadata, out_dir):
 
 def main():
   parser = argparse.ArgumentParser()
-  parser.add_argument('--base_dir', default=os.path.expanduser('~/dev/tacotron/assets'))
+  parser.add_argument('--base_dir', default=os.path.abspath('assets'))
   parser.add_argument('--output', default='training')
   parser.add_argument('--dataset', required=True, choices=['blizzard', 'ljspeech', 'benedict'])
   parser.add_argument('--num_workers', type=int, default=cpu_count())
