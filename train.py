@@ -53,7 +53,7 @@ def train(log_dir, args):
   elif(args.target == 'blizzard'):
     target_voice = 'Blizzard2012'
 
-  input_path = os.path.join(args.base_dir, args.input, target_voice, 'training/train.txt')
+  input_path = os.path.join(args.base_dir, args.input, target_voice, 'training', 'train.txt')
   log('Checkpoint path: %s' % checkpoint_path)
   log('Loading training data from: %s' % input_path)
   log('Using model: %s' % args.model)
