@@ -52,6 +52,8 @@ def train(log_dir, args):
     target_voice = 'LJSpeech-1.1'
   elif(args.target == 'blizzard'):
     target_voice = 'Blizzard2012'
+  elif (args.target == 'test'):
+    target_voice = 'Test'
 
   input_path = os.path.join(args.base_dir, args.input, target_voice, 'training', 'train.txt')
   log('Checkpoint path: %s' % checkpoint_path)
@@ -134,7 +136,7 @@ def main():
   parser = argparse.ArgumentParser()
   parser.add_argument('--base_dir', default=os.path.abspath(''))
   parser.add_argument('--input', default='assets')
-  parser.add_argument('--target', required=True, choices=['ljspeech', 'benedict', 'blizzard'])
+  parser.add_argument('--target', required=True, choices=['ljspeech', 'benedict', 'blizzard', 'test'])
   parser.add_argument('--model', default='tacotron')
   parser.add_argument('--name', help='Name of the run. Used for logging. Defaults to model name.')
   parser.add_argument('--hparams', default='',

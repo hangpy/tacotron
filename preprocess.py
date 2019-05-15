@@ -30,6 +30,15 @@ def preprocess_benedict(args):
   metadata = benedict.build_from_path(in_dir, out_dir, args.num_workers, tqdm=tqdm)
   write_metadata(metadata, out_dir)
 
+def preprocess_test(args):
+  in_dir = os.path.join(args.base_dir, 'Test')
+  out_dir = os.path.join(in_dir, args.output)
+  os.makedirs(out_dir, exist_ok=True)
+
+  # build_form_path는
+  metadata = benedict.build_from_path(in_dir, out_dir, args.num_workers, tqdm=tqdm)
+  write_metadata(metadata, out_dir)
+
 
 def write_metadata(metadata, out_dir):
   with open(os.path.join(out_dir, 'train.txt'), 'w', encoding='utf-8') as f:
@@ -47,7 +56,7 @@ def main():
   parser = argparse.ArgumentParser()
   parser.add_argument('--base_dir', default=os.path.abspath('assets'))
   parser.add_argument('--output', default='training')
-  parser.add_argument('--dataset', required=True, choices=['blizzard', 'ljspeech', 'benedict'])
+  parser.add_argument('--dataset', required=True, choices=['blizzard', 'ljspeech', 'benedict', 'test'])
   parser.add_argument('--num_workers', type=int, default=cpu_count())
   args = parser.parse_args()
   if args.dataset == 'blizzard':
@@ -56,6 +65,8 @@ def main():
     preprocess_ljspeech(args)
   elif args.dataset == 'benedict':
     preprocess_benedict(args)
+  elif args.dataset == 'test':
+    preprocess_test(args)
 
 
 if __name__ == "__main__":
