@@ -72,8 +72,15 @@ def text_recognition(path, config):
             else:
                 continue
 
-    with open(txt_path, 'w') as f:
-        json.dump(out, f, indent=2, ensure_ascii=False)
+    global removed
+    if len(out) is 0:
+        # remove file that only has instrument sound.
+        os.remove(root + '.wav')
+        print(root, '.wav file is removed!')
+
+    else:
+        with open(txt_path, 'w') as f:
+            json.dump(out, f, indent=2, ensure_ascii=False)
 
     return out
 
@@ -96,6 +103,9 @@ def parallel_run(fn, items, desc="", parallel=True):
     return results
 
 def text_recognition_batch(paths, config):
+
+    num_of_removed_file = [0]
+
     paths.sort()
 
     results = {}
@@ -109,6 +119,7 @@ def text_recognition_batch(paths, config):
     return results
 
 def main():
+
     parser = argparse.ArgumentParser()
     # input: wav파일들이 위치한 디렉토리 이름 (예: ./test_audio/ )
     parser.add_argument('--target', required=True, choices=['Benedict', 'Test'])
@@ -123,9 +134,7 @@ def main():
     for tmp_path in glob(os.path.join(audio_dir, "*.wav")):
         paths.append(tmp_path)
 
-    results = text_recognition_batch(paths, config)
-    print(results)
-
+    text_recognition_batch(paths, config)
 
 
 
