@@ -106,6 +106,26 @@ def get_all_duration():
         gross_duration += audioread.audio_open(file).duration
     print(str(datetime.timedelta(seconds=gross_duration)))
 
+def get_on_condition(time):
+    # audio file to split
+    target_dir = os.path.join(os.path.abspath(''), 'assets', 'Benedict', 'wavs')
+
+    file_pattern = 'BN*_*.wav'
+    audio_list = glob(os.path.join(target_dir, file_pattern))
+    long_audio_list = []
+    gross_duration = 0
+    num = 0
+    for file in audio_list:
+        file_duration = audioread.audio_open(file).duration
+        if file_duration < time:
+            num += 1
+            gross_duration += file_duration
+            print(file, 'duration: ', file_duration)
+            long_audio_list.append(file)
+    print('The number of audio files less than 3 secs: ', num)
+    print('The gross duration of audio files longer than', time, ': ', str(datetime.timedelta(seconds=gross_duration)))
+
+
 def func(a, b, c, d):
     print(a, b, c, d)
 
@@ -118,7 +138,10 @@ def a():
 
 
 def main():
-    # get_all_duration()
+    get_all_duration()
+
+    # get_on_condition(3)
+
     # json1 = {}
     # json2 = {
     #   "BN01_00005.wav": "the family and to which Giacomo Casanova was born on the 2nd of April 1725 was not merely untitled and poor it was notorious",
@@ -129,12 +152,7 @@ def main():
     # f1 = functools.partial(func, c=2, d=1)
     # f1(5, 3)
 
-    global num
-    num.append(2)
 
-    a()
-
-    print(num)
 
 
 
